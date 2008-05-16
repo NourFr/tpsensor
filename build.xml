@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TPSensorIfc" default="clear" basedir=".">
+  <property name="src" value="src"/>
+  <property name="classes" value="classes"/>
+  <property name="lib" value="lib"/>
+
+  <target name="clear">
+    <delete verbose="false"
+            includeEmptyDirs="true">
+       <fileset dir="${classes}"/>
+       <fileset dir="${lib}"/>
+    </delete>
+  </target>
+
+  <target name="init">
+    <mkdir dir="${classes}"/>
+    <mkdir dir="${lib}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src}"
+           destdir="${classes}"
+	   debug="on"/>
+  </target>
+
+  <target name="lib" depends="compile">
+    <jar jarfile="${lib}/sensorIfc.jar">
+       <fileset dir="${classes}"
+                includes="snifc/"/>
+    </jar>
+  </target>
+
+</project>
