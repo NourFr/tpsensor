@@ -12,12 +12,20 @@ public class Queue extends Vector implements QueueIfc{
 
 	// Ajout d'un element dans la file
 	public void enQueue(Packet p){
-		super.add(p);
+		if(super.size() <= QUEUE_SIZE){
+			super.add(p);
+		}else{
+			return null;
+		}	
 	}
 
 	// Retrait d'un element 
 	public Packet deQueue(){
-		return (Packet)super.firstElement();
+		try{
+			return super.remove(0);
+		catch(ArrayINdexOutOfBoundsException e){/*impossible*/
+		}
+		}
 	}	
 		
 }		
