@@ -5,6 +5,7 @@ import snifc.sensor.QueueIfc;
 import snifc.sensor.MemoryIfc;
 import snifc.sensor.IOPortsIfc;
 import snifc.sensor.SensorIfc;
+import sensornetwork.Packet;
  
 public class Sensor implements SensorIfc {
 
@@ -20,8 +21,13 @@ public class Sensor implements SensorIfc {
 	
 	
 	public void activateCaptor(){
-		PacketIfc nouveauPaquet;
-		nouveauPaquet = this.capteur.capture();
+		PacketIfc nouveauPaquet = new Packet(0,0);
+		try{
+			nouveauPaquet = this.capteur.capture();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}		
 		if (this.memoire.store(nouveauPaquet) != false) {
 			this.ports.writePacket(nouveauPaquet);
 		}
