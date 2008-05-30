@@ -1,20 +1,22 @@
 package snifc.sensor;
 
-import snifc.Link;
-import snifc.Packet;
+import snifc.LinkIfc;
+import snifc.PacketIfc;
 import java.util.Vector;
 
 public class IOPorts implements IOPortsIfc{
 
-	private Vector links;
 	private final int LINKS_SIZE = 10;
+	private Vector links;
+	private QueueIfc queue;
 
-
-	public IOPorts(){
-		links = new Vector(LINKS_SIZE);
+	public IOPorts(QueueIfc sensorQueue){
+		this.queue = new QueueIfc
+		this.queue = sensorQueue;
+		this.links = new Vector(LINKS_SIZE);
 	}
 
-	public void addLink(Link l) throws Exception {
+	public void addLink(LinkIfc l) throws Exception {
 		if(links.size() >= LINKS_SIZE){
 			throw new Exception("Vous avez depace la capacite du IOPort\n");
 		}else{	
@@ -22,13 +24,14 @@ public class IOPorts implements IOPortsIfc{
 		}
 	}
 
-	public void writePacket(Packet p){
-		Link l;
+	
+	public void writePacket(PacketIfc p){
+		LinkIfc l;
 		int i;
 
 		if(p.isTimeToLiveOK()){
 			for(i=0; i<this.links.size(); i++){
-				l=(Link)this.links.elementAt(i);
+				l=(LinkIfc)this.links.elementAt(i);
 				if(l!=null){
 					l.transmit(p, this);
 				}
@@ -37,15 +40,15 @@ public class IOPorts implements IOPortsIfc{
 	}
 
 	public void getPackets(){
-		Link l;
+		LinkIfc l;
 		int i;
 
 		for(i=0; i<this.links.size(); i++){
-			l=(Link)this.links.elementAt(i);
+			l=(LinkIfc)this.links.elementAt(i);
 			if(l!=null){
-				Packet p = getPendingPacket(this);
+				PacketIfc p = getPendingPacket(this);
 				if(p!=null){
-					super.queue.enQueue(p);
+					this.queue.enQueue(p);
 				}
 			}
 		}
