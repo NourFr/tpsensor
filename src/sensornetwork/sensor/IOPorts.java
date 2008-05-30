@@ -48,10 +48,10 @@ public class IOPorts implements IOPortsIfc{
 		for(i=0; i<this.links.size(); i++){
 			l=(LinkIfc)this.links.elementAt(i);
 			if(l!=null){
-				PacketIfc p = getPendingPacket(this);
+				PacketIfc p = l.getPendingPacket(this);
 				if(p!=null){
-					p.ttl--;
-					this.queue.enQueue(p);
+					PacketIfc pbis = new PacketIfc(p);
+					this.queue.enQueue(pbis);
 				}
 			}
 		}
