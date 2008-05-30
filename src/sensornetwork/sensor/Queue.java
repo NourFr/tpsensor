@@ -27,8 +27,9 @@ public class Queue extends Vector implements QueueIfc{
 			return (PacketIfc)super.remove(0);
 		}	
 		catch(ArrayIndexOutOfBoundsException e){/*impossible*/
+			e.printStackTrace();
 		}
-		
+		return null;	
 	}	
 		
 }		
