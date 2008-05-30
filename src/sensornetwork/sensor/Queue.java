@@ -23,9 +23,10 @@ public class Queue extends Vector implements QueueIfc{
 	public PacketIfc deQueue(){
 		try{
 			return super.remove(0);
+		}	
 		catch(ArrayINdexOutOfBoundsException e){/*impossible*/
 		}
-		}
+		
 	}	
 		
 }		
