@@ -1,5 +1,6 @@
 package sensornetwork;
-
+import snifc.PacketIfc;
+import snifc.Identifiable;
 
 public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 

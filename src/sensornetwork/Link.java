@@ -2,6 +2,8 @@ package sensornetwork;
 import snifc.sensor.IOPortsIfc;
 import snifc.LinkIfc;
 import java.util.Vector;
+import snifc.Identifiable;
+import snifc.PacketIfc;
 
 public class Link implements LinkIfc, Identifiable{
 
@@ -35,7 +37,7 @@ public class Link implements LinkIfc, Identifiable{
 		int index;
 		index = this.ports.indexOf(s);
 		if(index != -1){
-			return this.packets.removeElementAt(index);
+			return (PacketIfc)this.packets.remove(index);
 		}else{
 			System.out.println("Pas de packet à récupérer\n");
 			return null;
