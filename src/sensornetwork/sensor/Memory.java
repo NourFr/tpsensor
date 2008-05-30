@@ -1,5 +1,6 @@
 package sensornetwork.sensor;
 import snifc.PacketIfc;
+import snifc.sensor.MemoryIfc;
 import java.util.Vector;
 
 public class Memory implements MemoryIfc {

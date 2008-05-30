@@ -1,5 +1,10 @@
 package sensornetwork.sensor;
-
+import snifc.PacketIfc;
+import snifc.sensor.CaptorIfc;
+import snifc.sensor.QueueIfc;
+import snifc.sensor.MemoryIfc;
+import snifc.sensor.IOPortsIfc;
+import snifc.sensor.SensorIfc;
  
 public class Sensor implements SensorIfc {
 
