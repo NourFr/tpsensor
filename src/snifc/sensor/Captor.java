@@ -1,4 +1,4 @@
-package snifc.sensor;
+package sensornetwork.sensor;
 import snifc.PacketIfc;
 
 
