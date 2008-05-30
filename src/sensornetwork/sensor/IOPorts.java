@@ -11,7 +11,7 @@ public class IOPorts implements IOPortsIfc{
 	private QueueIfc queue;
 
 	public IOPorts(QueueIfc sensorQueue){
-		this.queue = new QueueIfc
+		this.queue = new QueueIfc();
 		this.queue = sensorQueue;
 		this.links = new Vector(LINKS_SIZE);
 	}
@@ -20,7 +20,7 @@ public class IOPorts implements IOPortsIfc{
 		if(links.size() >= LINKS_SIZE){
 			throw new Exception("Vous avez depace la capacite du IOPort\n");
 		}else{	
-			this.links.add(l)
+			this.links.add(l);
 		}
 	}
 
