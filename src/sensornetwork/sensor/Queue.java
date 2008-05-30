@@ -17,16 +17,16 @@ public class Queue extends Vector implements QueueIfc{
 		if(super.size() <= QUEUE_SIZE){
 			super.add(p);
 		}else{
-			return null;
+			System.out.println("la file d'attente du sensor est pleine\n");
 		}	
 	}
 
 	// Retrait d'un element 
 	public PacketIfc deQueue(){
 		try{
-			return super.remove(0);
+			return (PacketIfc)super.remove(0);
 		}	
-		catch(ArrayINdexOutOfBoundsException e){/*impossible*/
+		catch(ArrayIndexOutOfBoundsException e){/*impossible*/
 		}
 		
 	}	
