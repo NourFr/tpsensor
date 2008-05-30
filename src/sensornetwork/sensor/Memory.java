@@ -13,7 +13,7 @@ public class Memory implements MemoryIfc {
 		this.packetsStockets = new Vector(MEMORY_SIZE);
 	}
 
-	public abstract boolean store(PacketIfc p){
+	public boolean store(PacketIfc p){
 		int i;
 		boolean paquetDejaLa = false;
 		
@@ -41,7 +41,8 @@ public class Memory implements MemoryIfc {
 	}
 
 
-	public abstract String toString(){
+	public String toString(){
+		int i;
 		StringBuffer sb=new StringBuffer("Sensor # ");
 		sb.append(this.sensor.id);
 		sb.append(" has seen packets id ");

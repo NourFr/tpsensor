@@ -14,12 +14,12 @@ public class Sensor implements SensorIfc {
 	private IOPortsIfc ports;	
 	
 
-	public abstract void simulateCapture(){
+	public void simulateCapture(){
 		this.capteur.triggerCapture();
 	}
 	
 	
-	public abstract void activateCaptor(){
+	public void activateCaptor(){
 		PacketIfc nouveauPaquet;
 		nouveauPaquet = this.capteur.capture();
 		if (this.memoire.store(nouveauPaquet) != false) {
@@ -28,12 +28,12 @@ public class Sensor implements SensorIfc {
 	}
 	
 	
-	public abstract void activatePort(){
+	public void activatePort(){
 		this.ports.getPackets();
 	}
 	
 
-	public abstract void activateQueue(){
+	public void activateQueue(){
 		PacketIfc paquetCourant;
 		while (paquetCourant = this.queue.deQueue()) {
 			if (this.memoire.store(paquetCourant) != false) {
@@ -43,7 +43,7 @@ public class Sensor implements SensorIfc {
 	}
 	
 
-	public abstract IOPortsIfc getPort(){
+	public IOPortsIfc getPort(){
 		return this.ports;
 	}
 	
