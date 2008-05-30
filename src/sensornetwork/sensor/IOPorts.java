@@ -3,6 +3,7 @@ package sensornetwork.sensor;
 import snifc.LinkIfc;
 import snifc.PacketIfc;
 import snifc.sensor.QueueIfc;
+import sensornetwork.sensor.Queue;
 import snifc.sensor.IOPortsIfc;
 import java.util.Vector;
 
@@ -13,7 +14,7 @@ public class IOPorts implements IOPortsIfc{
 	private QueueIfc queue;
 
 	public IOPorts(QueueIfc sensorQueue){
-		this.queue = new QueueIfc();
+		this.queue = new Queue();
 		this.queue = sensorQueue;
 		this.links = new Vector(LINKS_SIZE);
 	}
@@ -50,7 +51,7 @@ public class IOPorts implements IOPortsIfc{
 			if(l!=null){
 				PacketIfc p = l.getPendingPacket(this);
 				if(p!=null){
-					PacketIfc pbis = new PacketIfc(p);
+					PacketIfc pbis = new Packet(p);
 					this.queue.enQueue(pbis);
 				}
 			}

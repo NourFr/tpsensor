@@ -5,7 +5,7 @@ import snifc.Identifiable;
 public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 
 	private int id;
-	public int ttl;
+	private int ttl;
 	
 	/*private int mesure;
 
@@ -22,7 +22,7 @@ public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 		this.ttl = ttl;
 	}	
 	
-	public Packet (PacketIfc p){
+	public Packet (Packet p){
 		this.id = p.id;
 		this.ttl = p.ttl -1;
 	}
