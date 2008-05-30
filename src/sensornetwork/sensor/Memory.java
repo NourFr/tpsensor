@@ -11,7 +11,7 @@ public class Memory implements MemoryIfc {
 	//Packet [] PacketsStockes = new Packet [MEMORY_SIZE];
 
 	public Memory (int id_senseur){
-		this.packetsStockes = new Vector(MEMORY_SIZE);
+		this.paquetsStockes = new Vector(MEMORY_SIZE);
 		this.id_senseur = id_senseur;
 	}
 
@@ -31,7 +31,7 @@ public class Memory implements MemoryIfc {
 		if(paquetDejaLa == false){
 			
 			this.paquetsStockes.add(0,p);
-			if(this.paquetsStockes.size() > 10) this.paquetsStockes.removeRange(10,20);
+			if(this.paquetsStockes.size() > 10) this.paquetsStockes.remove(10);
 			/*
 			for(i=MEMORY_SIZE-1;i=1;i--){
 				PacketsStockes[i] = PacketsStockes[i-1];
@@ -49,8 +49,8 @@ public class Memory implements MemoryIfc {
 		sb.append(this.id_senseur);
 		sb.append(" has seen packets id ");
 		for (i=0;i<MEMORY_SIZE;i++){
-			if(PaquetsStockes[i] != null){
-				sb.append(PaquetsStockes[i].getId());
+			if(this.paquetsStockes.get(i) != null){
+				sb.append((PacketIfc)(this.paquetsStockes.get(i)).getId());
 				sb.append("-");
 			}
 		}
