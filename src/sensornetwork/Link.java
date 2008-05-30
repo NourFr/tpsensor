@@ -1,5 +1,6 @@
 package sensornetwork;
 import snifc.sensor.IOPortsIfc;
+import snifc.LinkIfc;
 import java.util.Vector;
 
 public class Link implements LinkIfc, Identifiable{

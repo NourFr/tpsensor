@@ -1,5 +1,6 @@
 package sensornetwork.sensor;
 import snifc.PacketIfc;
+import snifc.sensor.CaptorIfc;
 
 
 public class Captor implements CaptorIfc {

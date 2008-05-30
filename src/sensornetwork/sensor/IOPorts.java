@@ -2,6 +2,8 @@ package sensornetwork.sensor;
 
 import snifc.LinkIfc;
 import snifc.PacketIfc;
+import snifc.sensor.QueueIfc;
+import snifc.sensor.IOPortsIfc;
 import java.util.Vector;
 
 public class IOPorts implements IOPortsIfc{
