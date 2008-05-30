@@ -1,4 +1,6 @@
 import java.util.Vector;
+import snifc.sensor.QueueIfc;
+import snifc.PacketIfc;
 
 public class Queue extends Vector implements QueueIfc{
 
