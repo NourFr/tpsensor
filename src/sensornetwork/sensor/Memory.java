@@ -50,7 +50,7 @@ public class Memory implements MemoryIfc {
 		sb.append(" has seen packets id ");
 		for (i=0;i<MEMORY_SIZE;i++){
 			if(this.paquetsStockes.get(i) != null){
-				sb.append((PacketIfc)(this.paquetsStockes.get(i)).getId());
+				sb.append(((PacketIfc)(this.paquetsStockes.get(i))).getId());
 				sb.append("-");
 			}
 		}
