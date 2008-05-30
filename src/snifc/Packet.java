@@ -1,4 +1,4 @@
-package snifc;
+package sensornetwork;
 
 
 public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
@@ -15,10 +15,16 @@ public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 	public void setMesure(int newMesure){
 		this.mesure=newMesure;
 	}*/	
-	
+
+	public Packet (int id, int ttl){
+		this.id = id;
+		this.ttl = ttl;
+	}	
+
 	public int compareTo(java.lang.Object o){
 		try{
-			return new Integer(this.id).compareTo(new Integer((Packet)o.id));
+			Packet p=(Packet)o;
+			return new Integer(this.id).compareTo(new Integer(p.id));
 		}catch(ClassCastException e){
 			throw e;
 		}

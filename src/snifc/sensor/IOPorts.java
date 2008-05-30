@@ -1,4 +1,4 @@
-package snifc.sensor;
+package sensornetwork.sensor;
 
 import snifc.LinkIfc;
 import snifc.PacketIfc;
@@ -48,6 +48,7 @@ public class IOPorts implements IOPortsIfc{
 			if(l!=null){
 				PacketIfc p = getPendingPacket(this);
 				if(p!=null){
+					p.ttl--;
 					this.queue.enQueue(p);
 				}
 			}
