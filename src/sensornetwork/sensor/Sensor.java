@@ -35,7 +35,7 @@ public class Sensor implements SensorIfc {
 
 	public void activateQueue(){
 		PacketIfc paquetCourant;
-		while (paquetCourant = this.queue.deQueue()) {
+		while ((paquetCourant = this.queue.deQueue())!=null) {
 			if (this.memoire.store(paquetCourant) != false) {
 				this.ports.writePacket(paquetCourant);
 			}

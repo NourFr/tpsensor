@@ -15,7 +15,7 @@ public class Captor implements CaptorIfc {
 		this.isMesureOk = false;
 		if(Math.random() > 0.5){
 			this.isMesureOk = true;
-			nouveauPacket = new PacketIfc();
+			this.nouveauPacket = new PacketIfc();
 		}
 	}
 	
@@ -24,7 +24,7 @@ public class Captor implements CaptorIfc {
 	public PacketIfc capture() throws Exception{
 		if(isMesureOk = true){
 			//mesure = (int)(Math.random() * (valeurMax-valeurMin)) + valeurMin;
-			return nouveauPacket;
+			return this.nouveauPacket;
 		}
 	}
 
