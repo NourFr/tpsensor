@@ -5,7 +5,7 @@ import snifc.Identifiable;
 public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 
 	private int id;
-	private int ttl;
+	public int ttl;
 	
 	/*private int mesure;
 
@@ -21,6 +21,11 @@ public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 		this.id = id;
 		this.ttl = ttl;
 	}	
+	
+	public Packet (PacketIfc p){
+		this.id = p.id;
+		this.ttl = p.ttl -1;
+	}
 
 	public int compareTo(java.lang.Object o){
 		try{
