@@ -4,6 +4,7 @@ import snifc.LinkIfc;
 import snifc.PacketIfc;
 import snifc.sensor.QueueIfc;
 import sensornetwork.sensor.Queue;
+import sensornetwork.Packet;
 import snifc.sensor.IOPortsIfc;
 import java.util.Vector;
 

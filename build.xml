@@ -26,7 +26,7 @@
   <target name="lib" depends="compile">
     <jar jarfile="${lib}/sensornetwork.jar">
        <fileset dir="${classes}"
-                includes="snifc/"/>
+                includes="sensornetwork/"/>
     </jar>
   </target>
 
