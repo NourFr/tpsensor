@@ -1,3 +1,4 @@
+package sensornetwork.sensor;
 import java.util.Vector;
 import snifc.sensor.QueueIfc;
 import snifc.PacketIfc;

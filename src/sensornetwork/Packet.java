@@ -22,9 +22,9 @@ public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 		this.ttl = ttl;
 	}	
 	
-	public Packet (Packet p){
-		this.id = p.id;
-		this.ttl = p.ttl -1;
+	public Packet (PacketIfc p){
+		this.id = ((Packet)p).id;
+		this.ttl = ((Packet)p).ttl -1;
 	}
 
 	public int compareTo(java.lang.Object o){

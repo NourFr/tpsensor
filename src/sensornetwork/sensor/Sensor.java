@@ -9,11 +9,20 @@ import sensornetwork.Packet;
  
 public class Sensor implements SensorIfc {
 
+	private int id;
 	private CaptorIfc capteur;
 	private QueueIfc queue;
 	private MemoryIfc memoire;
 	private IOPortsIfc ports;	
 	
+
+	public Sensor(int idSensor) {
+		this.id=idSensor;
+		this.capteur = new Captor(this.id);
+		this.queue = new Queue();
+		this.memoire = new Memory(this.id);
+		this.ports = new IOPorts(this.queue);
+	}
 
 	public void simulateCapture(){
 		this.capteur.triggerCapture();
