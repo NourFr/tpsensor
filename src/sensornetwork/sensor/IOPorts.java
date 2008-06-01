@@ -46,14 +46,25 @@ public class IOPorts implements IOPortsIfc{
 	public void getPackets(){
 		LinkIfc l;
 		int i;
+		boolean paquetConnu=false;
 
 		for(i=0; i<this.links.size(); i++){
 			l=(LinkIfc)this.links.elementAt(i);
 			if(l!=null){
 				PacketIfc p = l.getPendingPacket(this);
 				if(p!=null){
-					PacketIfc pbis = new Packet(p);
-					this.queue.enQueue(pbis);
+					System.out.println("Packet "+((Packet)p).getId()+" recupere\n");
+					for(i=0; i<((Queue)this.queue).size(); i++){
+						if(((Packet)((Queue)this.queue).elementAt(i)).compareTo(p)==0){
+							paquetConnu=true;
+						}
+					}	
+					if(paquetConnu==true){
+						System.out.println("Paquet "+((Packet)p).getId()+" deja connu donc detruit\n");
+					}else{	
+						PacketIfc pbis = new Packet(p);
+						this.queue.enQueue(pbis);
+					}
 				}
 			}
 		}

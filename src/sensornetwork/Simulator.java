@@ -3,6 +3,7 @@ package sensornetwork;
 import snifc.SimulatorIfc;
 import java.util.Vector;
 import snifc.PacketIfc;
+import snifc.LinkIfc;
 import snifc.sensor.CaptorIfc;
 import snifc.sensor.QueueIfc;
 import snifc.sensor.MemoryIfc;
@@ -21,11 +22,11 @@ public class Simulator implements SimulatorIfc{
 	
 	public Simulator(){
 		listeSensor = new Vector(nbSensors);
-		listeLink = new Vector();
+		listeLink = new Vector(nbSensors^2);
 	}	
 	
 	public void reset() {
-		this.nbSensors = 10;
+		this.nbSensors = 3;
 		this.nbSteps = 0;
 		listeSensor.clear();
 	}	
@@ -41,52 +42,63 @@ public class Simulator implements SimulatorIfc{
 	}	
 
 
-	public void linkSensors() {
+	public void linkSensors() throws Exception{
 		int i;
 		// Cree une topologie en anneau
 		System.out.println("Creation des liens\n");
-		listeLink.setSize(nbSensors);
+		try{
 		for(i=0;i<(nbSensors-1);i++){
 			listeLink.add(new Link(((Sensor)listeSensor.elementAt(i)).getPort(), ((Sensor)listeSensor.elementAt(i+1)).getPort(), i*10+i+1));
+			System.out.println("Ajout du lien "+((LinkIfc)listeLink.elementAt(i)).getId()+"\n");
+			((Sensor)listeSensor.elementAt(i)).getPort().addLink((LinkIfc)(listeLink.elementAt(i)));
+			((Sensor)listeSensor.elementAt(i+1)).getPort().addLink((LinkIfc)(listeLink.elementAt(i)));
 		}	
 		listeLink.add(new Link(((Sensor)listeSensor.elementAt(nbSensors-1)).getPort(), ((Sensor)listeSensor.elementAt(0)).getPort(), (nbSensors-1)*10));
-
+		System.out.println("Ajout du lien "+((LinkIfc)listeLink.elementAt(nbSensors-1)).getId()+"\n");
+		((Sensor)listeSensor.elementAt(0)).getPort().addLink((LinkIfc)(listeLink.elementAt(nbSensors-1)));
+		((Sensor)listeSensor.elementAt(nbSensors-1)).getPort().addLink((LinkIfc)(listeLink.elementAt(nbSensors-1)));
+		}
+		catch(Exception e){
+			System.out.println(((Link)listeLink.elementAt(1)).getId()+"\n");
+			System.out.println("La capacite max du IOport a ete atteinte\n");
+		}	
 	}	
 		
 	
 	public void runSensors() {
 
-		int i;
+		int i,j;
 
 		//test avec 4 etapes
 		this.nbSteps = 4;
 
-		System.out.println("Debut de la simulation\n");
+		System.out.println("Debut de la simulation pour "+this.nbSteps+" etapes\n");
 
-		for(i=0; i<this.nbSteps; i++){
-			System.out.println("----->>>>Etape " + i + " de la simulation<<<<-----\n");
+		for(j=0; j<this.nbSteps; j++){
+			System.out.println("----->>>>Etape " + j + " de la simulation<<<<-----\n");
 			
-			//Activation captures
-			for(i=0; i<listeSensor.size(); i++){
-				System.out.println("Simulation des captures\n");
-				((Sensor)listeSensor.elementAt(i)).simulateCapture();
-			}
+			//Activation capture sur le sensor 1
+			//for(i=0; i<listeSensor.size(); i++){
+				System.out.println("\n\nSimulation des captures\n");
+				((Sensor)listeSensor.elementAt(0)).simulateCapture();
+			//	((Sensor)listeSensor.elementAt(i)).simulateCapture();
+			//}
 
 			//Activation capteurs
+			System.out.println("\n\nActivation des capteurs\n");
 			for(i=0; i<listeSensor.size(); i++){
-				System.out.println("Activation des capteurs\n");
 				((Sensor)listeSensor.elementAt(i)).activateCaptor();
 			}
 			
 			//Activation ports
+			System.out.println("\n\nActivation des ports\n");
 			for(i=0; i<listeSensor.size(); i++){
-				System.out.println("Activation des ports\n");
 				((Sensor)listeSensor.elementAt(i)).activatePort();
 			}	
 
 			//Activation files d'attentes
+			System.out.println("\n\nActivation des queues\n");
 			for(i=0; i<listeSensor.size(); i++){
-				System.out.println("Activation des queues\n");
 				((Sensor)listeSensor.elementAt(i)).activateQueue();
 			}	
 		

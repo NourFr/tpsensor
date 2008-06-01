@@ -23,18 +23,22 @@ public class Captor implements CaptorIfc {
 		this.isMesureOk = false;
 		if(Math.random() > 0.5){
 			this.isMesureOk = true;
-			this.nouveauPacket = new Packet(idSensor + idPacket++, TTL_SIZE);
+			System.out.println("Nouvelle mesure ecrite dans le packet "+(idSensor+idPacket+1)+"\n");
+			this.nouveauPacket = new Packet(idSensor + ++idPacket, TTL_SIZE);
+
 		}
 	}
 	
 	
 	// Genere un packet transportant une mesure
 	public PacketIfc capture() throws Exception{
-		if(isMesureOk = true){
+		System.out.println("DEBUG isMesureOk "+this.isMesureOk+"\n");
+		if(this.isMesureOk == true){
+			System.out.println("Packet "+this.nouveauPacket.getId()+" genere sur le sensor "+idSensor+"\n");
 			//mesure = (int)(Math.random() * (valeurMax-valeurMin)) + valeurMin;
 			return this.nouveauPacket;
 		}else{
-			throw new Exception("La mesure n'est pas correcte\n");
+			throw new Exception("Pas de mesure generee\n");
 		}	
 	}
 
