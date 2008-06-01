@@ -19,7 +19,7 @@ public class Memory implements MemoryIfc {
 		int i;
 		boolean paquetDejaLa = false;
 		
-		if (this.paquetsStockes.indexOf(p) == -1) paquetDejaLa = true;
+		if (this.paquetsStockes.indexOf(p) != -1) paquetDejaLa = true;
 		
 		/*
 		for(i=0;i<MEMORY_SIZE;i++){
