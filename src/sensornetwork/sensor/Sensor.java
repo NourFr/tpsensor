@@ -12,7 +12,7 @@ public class Sensor implements SensorIfc {
 	private int id;
 	private CaptorIfc capteur;
 	private QueueIfc queue;
-	private MemoryIfc memoire;
+	public MemoryIfc memoire;
 	private IOPortsIfc ports;	
 	
 
@@ -38,17 +38,14 @@ public class Sensor implements SensorIfc {
 		catch(Exception e){
 			mesureOK=false;
 			System.out.println("Erreur au niveau de l'activation du capteur sur sensor "+id+"\n");
-			System.out.println("Pas de mesure generee\n");//.printStackTrace();
+			System.out.println("Pas de mesure generee\n");
 		}		
 		if(mesureOK==true){
-			if (this.memoire.store(nouveauPaquet) != false) {
-				System.out.println("Stockage du paquet "+nouveauPaquet.getId()+"\n");
-				this.ports.writePacket(nouveauPaquet);
-				System.out.println("Packet "+nouveauPaquet.getId()+" ecrit sur les liens du sensor "+id+"\n");
+				this.queue.enQueue(nouveauPaquet);
 			}else{
 				System.out.println("Probleme a l'ecriture du paquet "+nouveauPaquet.getId()+" dans la memoire\n");
 			}
-		}	
+			
 	}
 	
 	
@@ -62,8 +59,9 @@ public class Sensor implements SensorIfc {
 		PacketIfc paquetCourant;
 		System.out.println("Depilage de la queue sensor "+this.id+"\n");
 		while ((paquetCourant = this.queue.deQueue())!=null) {
-			System.out.println("Stockage du paquet "+paquetCourant.getId()+"\n");
+			
 			if (this.memoire.store(paquetCourant) != false) {
+				System.out.println("Stockage du paquet "+paquetCourant.getId()+"\n");
 				this.ports.writePacket(paquetCourant);
 				System.out.println("Packet "+paquetCourant.getId()+" ecrit sur les liens du sensor "+this.id+"\n");
 			}

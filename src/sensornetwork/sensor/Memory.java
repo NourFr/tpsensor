@@ -1,5 +1,6 @@
 package sensornetwork.sensor;
 import snifc.PacketIfc;
+import sensornetwork.Packet;
 import snifc.sensor.MemoryIfc;
 import java.util.Vector;
 
@@ -19,14 +20,12 @@ public class Memory implements MemoryIfc {
 		int i;
 		boolean paquetDejaLa = false;
 		
-		if (this.paquetsStockes.indexOf(p) != -1) paquetDejaLa = true;
-		
-		/*
-		for(i=0;i<MEMORY_SIZE;i++){
-			if(p.compareTo(PacketsStockes[i] == 0){
-				packetDejaLa = true;
+		for(i=0;i<this.paquetsStockes.size();i++){
+			if(p.compareTo((PacketIfc)(paquetsStockes.elementAt(i))) == 0){
+				paquetDejaLa = true;
+				System.out.println("Paquet "+((Packet)p).getId()+" deja present dans la memoire donc detruit\n");
 			}
-		}*/
+		}
 		
 		if(paquetDejaLa == false){
 			
@@ -48,7 +47,7 @@ public class Memory implements MemoryIfc {
 		StringBuffer sb=new StringBuffer("Sensor # ");
 		sb.append(this.id_senseur);
 		sb.append(" has seen packets id ");
-		for (i=0;i<MEMORY_SIZE;i++){
+		for (i=0;i<this.paquetsStockes.size();i++){
 			if(this.paquetsStockes.get(i) != null){
 				sb.append(((PacketIfc)(this.paquetsStockes.get(i))).getId());
 				sb.append("-");

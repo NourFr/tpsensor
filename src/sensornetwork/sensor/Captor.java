@@ -21,7 +21,7 @@ public class Captor implements CaptorIfc {
 	// Determine si une nouvelle mesure peut etre effectuee
 	public void triggerCapture(){
 		this.isMesureOk = false;
-		if(Math.random() > 0.5){
+		if(Math.random() > 0){
 			this.isMesureOk = true;
 			System.out.println("Nouvelle mesure ecrite dans le packet "+(idSensor+idPacket+1)+"\n");
 			this.nouveauPacket = new Packet(idSensor + ++idPacket, TTL_SIZE);
@@ -32,7 +32,6 @@ public class Captor implements CaptorIfc {
 	
 	// Genere un packet transportant une mesure
 	public PacketIfc capture() throws Exception{
-		System.out.println("DEBUG isMesureOk "+this.isMesureOk+"\n");
 		if(this.isMesureOk == true){
 			System.out.println("Packet "+this.nouveauPacket.getId()+" genere sur le sensor "+idSensor+"\n");
 			//mesure = (int)(Math.random() * (valeurMax-valeurMin)) + valeurMin;

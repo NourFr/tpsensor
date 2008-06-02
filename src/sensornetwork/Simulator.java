@@ -12,21 +12,82 @@ import snifc.sensor.SensorIfc;
 import sensornetwork.Packet;
 import sensornetwork.sensor.Sensor;
 
-public class Simulator implements SimulatorIfc{
+import javax.swing.JFrame;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.Color;
+import javax.swing.WindowConstants;
+
+
+public class Simulator implements SimulatorIfc, ActionListener{
 
 	private int nbSensors;
 	private int nbSteps;
 	private Vector listeSensor;
+	private Vector stats;
 	private Vector listeLink;
+	private JFrame fenetre;
+	private JPanel north, south, east, panel;
+	private JButton anneau, central, maille, asymetrique;
+	private JTextField afficheStat, afficheSteps;
 
 	
 	public Simulator(){
 		listeSensor = new Vector(nbSensors);
 		listeLink = new Vector(nbSensors^2);
+
+		this.fenetre = new JFrame("Reseau de sensors");
+
+		this.north = new JPanel();
+		this.south = new JPanel();
+		this.east = new JPanel();
+		this.panel = new JPanel();
+
+		this.anneau = new JButton("Topologie en anneau");
+		this.central = new JButton("Topologie centralisee");
+		this.maille = new JButton("Topologie entierement maillee");
+		this.asymetrique = new JButton("Topologie asymetrique");
+
+		this.afficheStat = new JTextField();
+		this.afficheSteps = new JTextField();
+
+		this.north.setLayout(new BorderLayout());
+		this.south.setLayout(new BorderLayout());
+		this.panel.setLayout(new BorderLayout());
+		this.east.setLayout(new GridLayout(1,4));
+
+		this.anneau.addActionListener(this);
+		this.central.addActionListener(this);
+		this.maille.addActionListener(this);
+		this.asymetrique.addActionListener(this);
+
+		south.add(this.afficheStat, BorderLayout.NORTH);
+		south.add(this.afficheSteps, BorderLayout.SOUTH);
+		east.add(this.anneau);
+		east.add(this.central);
+		east.add(this.maille);
+		east.add(this.asymetrique);
+
+		this.panel.add(this.south, BorderLayout.SOUTH);
+		this.panel.add(this.east, BorderLayout.EAST);
+		this.fenetre.getContentPane().add(panel);
+
+		fenetre.pack();
+		fenetre.setVisible(true);
+
 	}	
-	
+
+	public void actionPerformed(ActionEvent e){}
+
 	public void reset() {
-		this.nbSensors = 3;
+		this.nbSensors = 4;
 		this.nbSteps = 0;
 		listeSensor.clear();
 	}	
@@ -106,7 +167,16 @@ public class Simulator implements SimulatorIfc{
 
 	}
 
-	public void showStat(){}
+	public void showStat(){
+	
+		int i;
+		System.out.println("\n\nStatistiques de fin de simulation :\n");
+		for(i=0; i<this.listeSensor.size(); i++){
+			System.out.println(((Sensor)listeSensor.elementAt(i)).memoire);
+		}	
+			
+
+	}
 
 	public static void main(String [] args){
 		
@@ -116,6 +186,7 @@ public class Simulator implements SimulatorIfc{
 		s.createSensors();
 		s.linkSensors();
 		s.runSensors();
+		s.showStat();
 		}
 		catch (Exception e){
 			e.printStackTrace();
