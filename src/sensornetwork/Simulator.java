@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -34,9 +34,9 @@ public class Simulator implements SimulatorIfc, ActionListener{
 	private Vector stats;
 	private Vector listeLink;
 	private JFrame fenetre;
-	private JPanel north, south, east, panel;
+	private JPanel north, south, panel;
 	private JButton anneau, central, maille, asymetrique;
-	private JTextField afficheStat, afficheSteps;
+	private JTextArea afficheStat, afficheSteps;
 
 	
 	public Simulator(){
@@ -47,39 +47,43 @@ public class Simulator implements SimulatorIfc, ActionListener{
 
 		this.north = new JPanel();
 		this.south = new JPanel();
-		this.east = new JPanel();
+		this.north = new JPanel();
 		this.panel = new JPanel();
 
 		this.anneau = new JButton("Topologie en anneau");
 		this.central = new JButton("Topologie centralisee");
 		this.maille = new JButton("Topologie entierement maillee");
 		this.asymetrique = new JButton("Topologie asymetrique");
+		/*this.anneau.setSize(500,20);
+		this.central.setSize(50,20);
+		this.maille.setSize(50,20);
+		this.asymetrique.setSize(50,20);*/
 
-		this.afficheStat = new JTextField();
-		this.afficheSteps = new JTextField();
+		this.afficheStat = new JTextArea("Statistiques de la simulation :\n", 20, 50);
+		this.afficheSteps = new JTextArea("Deroulement de la simulation : \n", 20, 50);
 
-		this.north.setLayout(new BorderLayout());
-		this.south.setLayout(new BorderLayout());
+		this.south.setLayout(new BorderLayout(0,40));
+		this.north.setLayout(new GridLayout(1,4,60,50));
 		this.panel.setLayout(new BorderLayout());
-		this.east.setLayout(new GridLayout(1,4));
 
 		this.anneau.addActionListener(this);
 		this.central.addActionListener(this);
 		this.maille.addActionListener(this);
 		this.asymetrique.addActionListener(this);
 
-		south.add(this.afficheStat, BorderLayout.NORTH);
-		south.add(this.afficheSteps, BorderLayout.SOUTH);
-		east.add(this.anneau);
-		east.add(this.central);
-		east.add(this.maille);
-		east.add(this.asymetrique);
+		south.add(this.afficheSteps, BorderLayout.NORTH);
+		south.add(this.afficheStat, BorderLayout.SOUTH);
+		north.add(this.anneau);
+		north.add(this.central);
+		north.add(this.maille);
+		north.add(this.asymetrique);
 
 		this.panel.add(this.south, BorderLayout.SOUTH);
-		this.panel.add(this.east, BorderLayout.EAST);
+		this.panel.add(this.north, BorderLayout.NORTH);
 		this.fenetre.getContentPane().add(panel);
 
 		fenetre.pack();
+		fenetre.setSize(1100,800);
 		fenetre.setVisible(true);
 
 	}	
