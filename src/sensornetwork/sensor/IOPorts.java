@@ -5,6 +5,7 @@ import snifc.PacketIfc;
 import snifc.sensor.QueueIfc;
 import sensornetwork.sensor.Queue;
 import sensornetwork.Packet;
+import sensornetwork.Link;
 import snifc.sensor.IOPortsIfc;
 import java.util.Vector;
 
@@ -38,6 +39,7 @@ public class IOPorts implements IOPortsIfc{
 				l=(LinkIfc)this.links.elementAt(i);
 				if(l!=null){
 					l.transmit(p, this);
+					sensornetwork.Simulator.afficheSteps.append("Packet "+((Packet)p).getId()+" transmited on link "+((Link)l).getId()+"\n");
 				}
 			}
 		}

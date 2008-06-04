@@ -34,6 +34,7 @@ public class Sensor implements SensorIfc {
 		PacketIfc nouveauPaquet = new Packet(0,0);
 		try{
 			nouveauPaquet = this.capteur.capture();
+			sensornetwork.Simulator.afficheSteps.append("Packet "+nouveauPaquet.getId()+" genere sur le sensor "+this.id+"\n");
 		}
 		catch(Exception e){
 			mesureOK=false;
