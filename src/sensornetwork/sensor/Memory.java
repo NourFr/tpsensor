@@ -53,6 +53,7 @@ public class Memory implements MemoryIfc {
 				sb.append("-");
 			}
 		}
+			sb.append("\n");
 		return sb.toString();
 	}
 }
