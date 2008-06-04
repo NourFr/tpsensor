@@ -30,8 +30,6 @@ public class Memory implements MemoryIfc {
 		
 		if(paquetDejaLa == false){
 			
-			this.paquetsStockes.add(p);
-			
 			if(this.paquetsStockes.size() > 10){
 				this.paquetsStockes.remove(0);
 				sensornetwork.Simulator.afficheSteps.append("Packet "+((Packet)this.paquetsStockes.remove(0)).getId()+" removed on sensor "+this.id_senseur+"\n");

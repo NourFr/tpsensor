@@ -14,6 +14,14 @@ public class Link implements LinkIfc, Identifiable{
 	private PacketIfc fromRight;
 
 
+	public Link (Link l){
+		this.id=l.id;
+		this.left=l.left;
+		this.right=l.right;
+		this.fromLeft=l.fromLeft;
+		this.fromRight=l.fromRight;
+	}	
+	
 	public Link (IOPortsIfc left_sensor, IOPortsIfc right_sensor, int id){
 		this.id = id;
 		this.left = left_sensor;
