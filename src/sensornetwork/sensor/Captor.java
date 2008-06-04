@@ -10,7 +10,7 @@ public class Captor implements CaptorIfc {
 	private PacketIfc nouveauPacket;
 	private int idSensor;
 	private int idPacket = 0;
-	private static int TTL_SIZE = 10;
+	private int ttl_size = Integer.parseInt(sensornetwork.Simulator.ttlText.getText());
 	//private int valeurMin, valeurMax;
 	
 	public Captor(int idSensor){
@@ -24,7 +24,7 @@ public class Captor implements CaptorIfc {
 		if(Math.random() > 0){
 			this.isMesureOk = true;
 			System.out.println("Nouvelle mesure ecrite dans le packet "+(idSensor+idPacket+1)+"\n");
-			this.nouveauPacket = new Packet(idSensor + ++idPacket, TTL_SIZE);
+			this.nouveauPacket = new Packet(idSensor + ++idPacket, ttl_size);
 
 		}
 	}

@@ -15,8 +15,10 @@ import sensornetwork.sensor.Sensor;
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -24,45 +26,52 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
 import javax.swing.WindowConstants;
+import java.lang.Integer;
 
 
 public class Simulator implements SimulatorIfc, ActionListener{
 
-	private int nbSensors;
-	private int nbSteps;
+	private int topology; // 1 : anneau  2 : central  3 : maille  4 : asymetrique
 	private Vector listeSensor;
 	private Vector stats;
 	private Vector listeLink;
 	private JFrame fenetre;
-	private JPanel north, south, panel;
+	private JLabel ttlLabel,nbSensorsLabel, nbStepsLabel;
+	public static JTextField ttlText, sensorsText, stepsText;
+	private JPanel north, south, center, panel;
 	private JButton anneau, central, maille, asymetrique;
-	private JTextArea afficheStat, afficheSteps;
+	public static JTextArea afficheStat, afficheSteps;
 
 	
 	public Simulator(){
-		listeSensor = new Vector(nbSensors);
-		listeLink = new Vector(nbSensors^2);
 
 		this.fenetre = new JFrame("Reseau de sensors");
 
 		this.north = new JPanel();
+		this.center = new JPanel();
 		this.south = new JPanel();
-		this.north = new JPanel();
 		this.panel = new JPanel();
 
 		this.anneau = new JButton("Topologie en anneau");
 		this.central = new JButton("Topologie centralisee");
 		this.maille = new JButton("Topologie entierement maillee");
 		this.asymetrique = new JButton("Topologie asymetrique");
-		/*this.anneau.setSize(500,20);
-		this.central.setSize(50,20);
-		this.maille.setSize(50,20);
-		this.asymetrique.setSize(50,20);*/
 
-		this.afficheStat = new JTextArea("Statistiques de la simulation :\n", 20, 50);
-		this.afficheSteps = new JTextArea("Deroulement de la simulation : \n", 20, 50);
+		this.ttlLabel = new JLabel("ttl :");
+		this.nbSensorsLabel = new JLabel("Nombre de sensors :");
+		this.nbStepsLabel = new JLabel("Nombre d'etapes :");
+		this.ttlText = new JTextField("10",6);
+		this.sensorsText = new JTextField("4",6);
+		this.stepsText = new JTextField("4",6);
+
+		listeSensor = new Vector(Integer.parseInt(this.sensorsText.getText()));
+		listeLink = new Vector((Integer.parseInt(this.sensorsText.getText()))^2);
+		
+		this.afficheStat = new JTextArea("Statistiques de la simulation :\n", 10, 50);
+		this.afficheSteps = new JTextArea("Deroulement de la simulation : \n", 25, 50);
 
 		this.south.setLayout(new BorderLayout(0,40));
+		this.center.setLayout(new FlowLayout(1,40,50));
 		this.north.setLayout(new GridLayout(1,4,60,50));
 		this.panel.setLayout(new BorderLayout());
 
@@ -73,12 +82,19 @@ public class Simulator implements SimulatorIfc, ActionListener{
 
 		south.add(this.afficheSteps, BorderLayout.NORTH);
 		south.add(this.afficheStat, BorderLayout.SOUTH);
+		center.add(this.ttlLabel);
+		center.add(this.ttlText);
+		center.add(this.nbSensorsLabel);
+		center.add(this.sensorsText);
+		center.add(this.nbStepsLabel);
+		center.add(this.stepsText);
 		north.add(this.anneau);
 		north.add(this.central);
 		north.add(this.maille);
 		north.add(this.asymetrique);
 
 		this.panel.add(this.south, BorderLayout.SOUTH);
+		this.panel.add(this.center, BorderLayout.CENTER);
 		this.panel.add(this.north, BorderLayout.NORTH);
 		this.fenetre.getContentPane().add(panel);
 
@@ -88,18 +104,37 @@ public class Simulator implements SimulatorIfc, ActionListener{
 
 	}	
 
-	public void actionPerformed(ActionEvent e){}
+	public void actionPerformed(ActionEvent e){
+		
+		if (e.getSource() == this.anneau) this.topology = 1;
+		if (e.getSource() == this.central) this.topology = 2;
+		if (e.getSource() == this.maille) this.topology = 3;
+		if (e.getSource() == this.asymetrique) this.topology = 4;
+				
+		try{
+		this.reset();
+		this.createSensors();
+		this.linkSensors();
+		this.runSensors();
+		this.showStat();
+		}
+		catch(Exception huhu){
+			afficheSteps.append("probleme\n");
+			huhu.printStackTrace();
+		}	
+	}
 
 	public void reset() {
-		this.nbSensors = 4;
-		this.nbSteps = 0;
-		listeSensor.clear();
+		this.listeSensor.clear();
+		this.listeLink.clear();
+		this.afficheSteps.setText("Déroulement de la simulation :\n");
+		this.afficheStat.setText("Statistiques de la simulation :\n");
 	}	
 
 	public void createSensors() throws Exception{
 		int i;
-		System.out.println("Creation des senseurs\n");
-		for(i=0;i<nbSensors;i++){
+		afficheSteps.append("Creation des senseurs\n");
+		for(i=0;i<Integer.parseInt(this.sensorsText.getText());i++){
 			if(listeSensor.add(new Sensor(i))==false){
 				throw new Exception("Erreur a l'ajout d'un sensor");
 			}	
@@ -110,22 +145,22 @@ public class Simulator implements SimulatorIfc, ActionListener{
 	public void linkSensors() throws Exception{
 		int i;
 		// Cree une topologie en anneau
-		System.out.println("Creation des liens\n");
+		afficheSteps.append("Creation des liens\n");
 		try{
-		for(i=0;i<(nbSensors-1);i++){
+		for(i=0;i<(Integer.parseInt(this.sensorsText.getText())-1);i++){
 			listeLink.add(new Link(((Sensor)listeSensor.elementAt(i)).getPort(), ((Sensor)listeSensor.elementAt(i+1)).getPort(), i*10+i+1));
-			System.out.println("Ajout du lien "+((LinkIfc)listeLink.elementAt(i)).getId()+"\n");
+			afficheSteps.append("Ajout du lien "+((LinkIfc)listeLink.elementAt(i)).getId()+"\n");
 			((Sensor)listeSensor.elementAt(i)).getPort().addLink((LinkIfc)(listeLink.elementAt(i)));
 			((Sensor)listeSensor.elementAt(i+1)).getPort().addLink((LinkIfc)(listeLink.elementAt(i)));
 		}	
-		listeLink.add(new Link(((Sensor)listeSensor.elementAt(nbSensors-1)).getPort(), ((Sensor)listeSensor.elementAt(0)).getPort(), (nbSensors-1)*10));
-		System.out.println("Ajout du lien "+((LinkIfc)listeLink.elementAt(nbSensors-1)).getId()+"\n");
-		((Sensor)listeSensor.elementAt(0)).getPort().addLink((LinkIfc)(listeLink.elementAt(nbSensors-1)));
-		((Sensor)listeSensor.elementAt(nbSensors-1)).getPort().addLink((LinkIfc)(listeLink.elementAt(nbSensors-1)));
+		listeLink.add(new Link(((Sensor)listeSensor.elementAt(Integer.parseInt(this.sensorsText.getText())-1)).getPort(), ((Sensor)listeSensor.elementAt(0)).getPort(), (Integer.parseInt(this.sensorsText.getText())-1)*10));
+		afficheSteps.append("Ajout du lien "+((LinkIfc)listeLink.elementAt(Integer.parseInt(this.sensorsText.getText())-1)).getId()+"\n");
+		((Sensor)listeSensor.elementAt(0)).getPort().addLink((LinkIfc)(listeLink.elementAt(Integer.parseInt(this.sensorsText.getText())-1)));
+		((Sensor)listeSensor.elementAt(Integer.parseInt(this.sensorsText.getText())-1)).getPort().addLink((LinkIfc)(listeLink.elementAt(Integer.parseInt(this.sensorsText.getText())-1)));
 		}
 		catch(Exception e){
-			System.out.println(((Link)listeLink.elementAt(1)).getId()+"\n");
-			System.out.println("La capacite max du IOport a ete atteinte\n");
+			afficheSteps.append(((Link)listeLink.elementAt(1)).getId()+"\n");
+			afficheSteps.append("La capacite max du IOport a ete atteinte\n");
 		}	
 	}	
 		
@@ -135,34 +170,33 @@ public class Simulator implements SimulatorIfc, ActionListener{
 		int i,j;
 
 		//test avec 4 etapes
-		this.nbSteps = 4;
 
-		System.out.println("Debut de la simulation pour "+this.nbSteps+" etapes\n");
+		afficheSteps.append("Debut de la simulation pour "+this.stepsText.getText()+" etapes\n");
 
-		for(j=0; j<this.nbSteps; j++){
-			System.out.println("----->>>>Etape " + j + " de la simulation<<<<-----\n");
+		for(j=0; j<Integer.parseInt(this.stepsText.getText()); j++){
+			afficheSteps.append("----->>>>Etape " + j + " de la simulation<<<<-----\n");
 			
 			//Activation capture sur le sensor 1
 			//for(i=0; i<listeSensor.size(); i++){
-				System.out.println("\n\nSimulation des captures\n");
+				//afficheSteps.append("\n\nSimulation des captures\n");
 				((Sensor)listeSensor.elementAt(0)).simulateCapture();
 			//	((Sensor)listeSensor.elementAt(i)).simulateCapture();
 			//}
 
 			//Activation capteurs
-			System.out.println("\n\nActivation des capteurs\n");
+			//afficheSteps.append("\n\nActivation des capteurs\n");
 			for(i=0; i<listeSensor.size(); i++){
 				((Sensor)listeSensor.elementAt(i)).activateCaptor();
 			}
 			
 			//Activation ports
-			System.out.println("\n\nActivation des ports\n");
+			//afficheSteps.append("\n\nActivation des ports\n");
 			for(i=0; i<listeSensor.size(); i++){
 				((Sensor)listeSensor.elementAt(i)).activatePort();
 			}	
 
 			//Activation files d'attentes
-			System.out.println("\n\nActivation des queues\n");
+			//afficheSteps.append("\n\nActivation des queues\n");
 			for(i=0; i<listeSensor.size(); i++){
 				((Sensor)listeSensor.elementAt(i)).activateQueue();
 			}	
@@ -174,9 +208,8 @@ public class Simulator implements SimulatorIfc, ActionListener{
 	public void showStat(){
 	
 		int i;
-		System.out.println("\n\nStatistiques de fin de simulation :\n");
 		for(i=0; i<this.listeSensor.size(); i++){
-			System.out.println(((Sensor)listeSensor.elementAt(i)).memoire);
+			afficheStat.append(((Sensor)listeSensor.elementAt(i)).memoire.toString());
 		}	
 			
 
@@ -185,7 +218,8 @@ public class Simulator implements SimulatorIfc, ActionListener{
 	public static void main(String [] args){
 		
 		Simulator s = new Simulator();
-		try{
+		while(true){}
+		/*try{
 		s.reset();
 		s.createSensors();
 		s.linkSensors();
@@ -194,7 +228,7 @@ public class Simulator implements SimulatorIfc, ActionListener{
 		}
 		catch (Exception e){
 			e.printStackTrace();
-		}	
+		}*/	
 	}	
 
 }

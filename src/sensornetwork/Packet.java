@@ -5,7 +5,7 @@ import snifc.Identifiable;
 public class Packet implements PacketIfc, Identifiable, java.lang.Comparable {
 
 	private int id;
-	private int ttl;
+	private int ttl = Integer.parseInt(Simulator.ttlText.getText());
 	
 	/*private int mesure;
 
