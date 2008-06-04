@@ -198,9 +198,9 @@ public class Simulator implements SimulatorIfc, ActionListener{
 					for(i=0;i<(Integer.parseInt(this.sensorsText.getText())-1);i++){ 
 						for(j=i+1;j<(Integer.parseInt(this.sensorsText.getText()));j++){ 
 							listeLink.add(new Link(((Sensor)listeSensor.elementAt(i)).getPort(), ((Sensor)listeSensor.elementAt(j)).getPort(), j*10+i));
-							afficheSteps.append("Ajout du lien "+((LinkIfc)listeLink.elementAt(i+j-1)).getId()+"\n");
-							((Sensor)listeSensor.elementAt(i)).getPort().addLink((LinkIfc)(listeLink.elementAt(i+j-1)));
-							((Sensor)listeSensor.elementAt(j)).getPort().addLink((LinkIfc)(listeLink.elementAt(i+j-1)));
+							afficheSteps.append("Ajout du lien "+((LinkIfc)listeLink.lastElement()).getId()+"\n");
+							((Sensor)listeSensor.elementAt(i)).getPort().addLink((LinkIfc)(listeLink.lastElement()));
+							((Sensor)listeSensor.elementAt(j)).getPort().addLink((LinkIfc)(listeLink.lastElement()));
 						}
 					}	
 				}
