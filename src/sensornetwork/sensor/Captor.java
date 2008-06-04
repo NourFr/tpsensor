@@ -9,7 +9,7 @@ public class Captor implements CaptorIfc {
 	private boolean isMesureOk; 
 	private PacketIfc nouveauPacket;
 	private int idSensor;
-	private int idPacket = 0;
+	private int idPacket = -1;
 	private int ttl_size = Integer.parseInt(sensornetwork.Simulator.ttlText.getText());
 	//private int valeurMin, valeurMax;
 	

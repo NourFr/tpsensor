@@ -31,8 +31,8 @@ public class Queue extends Vector implements QueueIfc{
 		}	
 		catch(ArrayIndexOutOfBoundsException e){
 			System.out.println("Pas de packet present dans la file\n");
+			return null;	
 		}
-		return null;	
 	}	
 		
 }		

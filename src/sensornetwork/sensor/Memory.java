@@ -23,19 +23,22 @@ public class Memory implements MemoryIfc {
 		for(i=0;i<this.paquetsStockes.size();i++){
 			if(p.compareTo((PacketIfc)(paquetsStockes.elementAt(i))) == 0){
 				paquetDejaLa = true;
+				sensornetwork.Simulator.afficheSteps.append("Packet "+((Packet)p).getId()+" droped on sensor "+this.id_senseur+"\n");
 				System.out.println("Paquet "+((Packet)p).getId()+" deja present dans la memoire donc detruit\n");
 			}
 		}
 		
 		if(paquetDejaLa == false){
 			
-			this.paquetsStockes.add(0,p);
-			if(this.paquetsStockes.size() > 10) this.paquetsStockes.remove(10);
-			/*
-			for(i=MEMORY_SIZE-1;i=1;i--){
-				PacketsStockes[i] = PacketsStockes[i-1];
+			this.paquetsStockes.add(p);
+			
+			if(this.paquetsStockes.size() > 10){
+				this.paquetsStockes.remove(0);
+				sensornetwork.Simulator.afficheSteps.append("Packet "+((Packet)this.paquetsStockes.remove(0)).getId()+" removed on sensor "+this.id_senseur+"\n");
+			}else{
+				this.paquetsStockes.add(p);
+				sensornetwork.Simulator.afficheSteps.append("Packet "+((Packet)this.paquetsStockes.lastElement()).getId()+" stored on sensor "+this.id_senseur+"\n");
 			}
-			PacketsStockes[0] = p;*/
 			return true;
 		}
 		return false;
