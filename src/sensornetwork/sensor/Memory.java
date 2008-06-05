@@ -3,6 +3,7 @@ import snifc.PacketIfc;
 import sensornetwork.Packet;
 import snifc.sensor.MemoryIfc;
 import java.util.Vector;
+import java.lang.Thread;
 
 public class Memory implements MemoryIfc {
 
@@ -25,6 +26,7 @@ public class Memory implements MemoryIfc {
 				paquetDejaLa = true;
 				sensornetwork.Simulator.afficheSteps.append("Packet "+((Packet)p).getId()+" droped on sensor "+this.id_senseur+"\n");
 				System.out.println("Paquet "+((Packet)p).getId()+" deja present dans la memoire donc detruit\n");
+
 			}
 		}
 		

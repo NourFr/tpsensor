@@ -40,9 +40,16 @@ public class Link implements LinkIfc, Identifiable{
 	public PacketIfc getPendingPacket(IOPortsIfc s){
 		
 		if(this.left == s){	
-			return (fromRight);
+			PacketIfc p;
+			p=fromRight;
+			fromRight=null;
+			return (p);
 		}else{
-			return (fromLeft);
+			PacketIfc p;
+			p=fromLeft;
+			fromLeft=null;
+			return (p);			
+			//return (fromLeft);
 		}	
 	}
 
