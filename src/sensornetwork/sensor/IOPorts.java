@@ -63,6 +63,10 @@ public class IOPorts implements IOPortsIfc{
 					}	
 					if(paquetConnu==true){
 						System.out.println("Paquet "+((Packet)p).getId()+" deja connu donc detruit\n");
+									/*	try{Thread.sleep(10000);}
+								catch(Exception e){
+					e.printStackTrace();
+				}*/
 					}else{	
 						PacketIfc pbis = new Packet(p);
 						this.queue.enQueue(pbis);

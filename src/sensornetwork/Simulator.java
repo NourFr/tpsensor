@@ -18,6 +18,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -41,11 +42,13 @@ public class Simulator implements SimulatorIfc, ActionListener{
 	private JPanel north, south, center, panel;
 	private JButton anneau, central, maille, asymetrique;
 	public static JTextArea afficheStat, afficheSteps;
+	private JScrollPane scrolledAffiche,scrolledStat;
 
 
 	public Simulator(){
 
 		this.fenetre = new JFrame("Reseau de sensors");
+		this.fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		this.north = new JPanel();
 		this.center = new JPanel();
@@ -67,8 +70,13 @@ public class Simulator implements SimulatorIfc, ActionListener{
 		listeSensor = new Vector(Integer.parseInt(this.sensorsText.getText()));
 		listeLink = new Vector((Integer.parseInt(this.sensorsText.getText()))^2);
 
-		this.afficheStat = new JTextArea("Statistiques de la simulation :\n", 10, 50);
-		this.afficheSteps = new JTextArea("Deroulement de la simulation : \n", 25, 50);
+		this.afficheStat = new JTextArea("Statistiques de la simulation :\n", 10, 30);
+		this.afficheSteps = new JTextArea("Deroulement de la simulation : \n", 25, 30);
+
+	    this.scrolledAffiche = new JScrollPane(this.afficheSteps);
+	    this.scrolledAffiche.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		this.scrolledStat = new JScrollPane(this.afficheStat);
+	    this.scrolledStat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.south.setLayout(new BorderLayout(0,40));
 		this.center.setLayout(new FlowLayout(1,40,50));
@@ -80,8 +88,8 @@ public class Simulator implements SimulatorIfc, ActionListener{
 		this.maille.addActionListener(this);
 		this.asymetrique.addActionListener(this);
 
-		south.add(this.afficheSteps, BorderLayout.NORTH);
-		south.add(this.afficheStat, BorderLayout.SOUTH);
+		south.add(this.scrolledAffiche, BorderLayout.NORTH);
+		south.add(this.scrolledStat, BorderLayout.SOUTH);
 		center.add(this.ttlLabel);
 		center.add(this.ttlText);
 		center.add(this.nbSensorsLabel);
@@ -143,7 +151,7 @@ public class Simulator implements SimulatorIfc, ActionListener{
 
 
 	public void linkSensors() throws Exception{
-		int i,j;
+		int i,j,id_chgmt;
 
 		switch (this.topology){
 
@@ -152,6 +160,7 @@ public class Simulator implements SimulatorIfc, ActionListener{
 				// Cree une topologie en anneau
 				afficheSteps.append("Creation des liens\n");
 				try{
+					// Boucle sur le nb de senseurs en paramètre
 					for(i=0;i<(Integer.parseInt(this.sensorsText.getText())-1);i++){
 						listeLink.add(new Link(((Sensor)listeSensor.elementAt(i)).getPort(), ((Sensor)listeSensor.elementAt(i+1)).getPort(), (i+1)*10+i));
 						afficheSteps.append("Ajout du lien "+((LinkIfc)listeLink.elementAt(i)).getId()+"\n");
@@ -208,6 +217,38 @@ public class Simulator implements SimulatorIfc, ActionListener{
 					//afficheSteps.append(((Link)listeLink.elementAt(1)).getId()+"\n");
 					afficheSteps.append("La capacite max du IOport a ete atteinte\n");
 					e.printStackTrace();
+				}
+				break;
+				
+				
+
+			case 4 :
+
+				// Cree une topologie en anneau puis linéraire
+				afficheSteps.append("Creation des liens\n");
+				try{
+					// Boucle sur le nb de senseurs en paramètre
+					for(i=0;(i<(Integer.parseInt(this.sensorsText.getText())-1)) /*&& (i<3)*/;i++){
+						listeLink.add(new Link(((Sensor)listeSensor.elementAt(i)).getPort(), ((Sensor)listeSensor.elementAt(i+1)).getPort(), (i+1)*10+i));
+						afficheSteps.append("Ajout du lien "+((LinkIfc)listeLink.elementAt(i)).getId()+"\n");
+						((Sensor)listeSensor.elementAt(i)).getPort().addLink((LinkIfc)(listeLink.elementAt(i)));
+						((Sensor)listeSensor.elementAt(i+1)).getPort().addLink((LinkIfc)(listeLink.elementAt(i)));
+					}	
+					
+					if(Integer.parseInt(this.sensorsText.getText()) >4){
+						id_chgmt = 3;
+					}else{
+						id_chgmt = Integer.parseInt(this.sensorsText.getText())-1;
+					}
+					
+					listeLink.add(new Link(((Sensor)listeSensor.elementAt(id_chgmt)).getPort(), ((Sensor)listeSensor.elementAt(0)).getPort(), (id_chgmt)*10));
+					afficheSteps.append("Ajout du lien "+((LinkIfc)listeLink.lastElement()).getId()+"\n");
+					((Sensor)listeSensor.elementAt(0)).getPort().addLink((LinkIfc)(listeLink.lastElement()));
+					((Sensor)listeSensor.elementAt(id_chgmt)).getPort().addLink((LinkIfc)(listeLink.lastElement()));
+				}
+				catch(Exception e){
+					afficheSteps.append(((Link)listeLink.elementAt(1)).getId()+"\n");
+					afficheSteps.append("La capacite max du IOport a ete atteinte\n");
 				}
 				break;
 		
